@@ -86,7 +86,7 @@ impl<T> Eq for ThingType<T> {}
 
 impl<T> PartialOrd<Self> for ThingType<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.thing.partial_cmp(&other.thing)
+        Some(self.cmp(other))
     }
 }
 

@@ -2869,6 +2869,8 @@ dependencies = [
 [[package]]
 name = "surrealdb-extras-proc-macro"
 version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd0b358b67e1c278ab0b29a1c95c024b5a17ed5e5c7c494492a9d24650b569f8"
 dependencies = [
  "deluxe",
  "proc-macro2",

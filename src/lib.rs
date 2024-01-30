@@ -9,12 +9,12 @@ mod thing_distplay;
 use serde::de::DeserializeOwned;
 use std::collections::HashMap;
 
-pub use surrealdb_extras_proc_macro::SurrealSelect;
-pub use surrealdb_extras_proc_macro::SurrealTable;
 pub use define::use_ns_db;
 pub use records::Record;
 pub use records::RecordData;
 pub use surreal_table::SurrealTableInfo;
+pub use surrealdb_extras_proc_macro::SurrealSelect;
+pub use surrealdb_extras_proc_macro::SurrealTable;
 pub use thing::ThingFunc;
 pub use thing::ThingType;
 

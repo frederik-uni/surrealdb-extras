@@ -1,3 +1,4 @@
+#![allow(async_fn_in_trait)]
 use crate::{Record, RecordData, SurrealSelectInfo};
 use serde::Serialize;
 use std::collections::HashMap;
@@ -27,7 +28,7 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo {
         db: &Surreal<C>,
     ) -> Result<Option<Record>, surrealdb::Error> {
         let ignore = Self::exclude();
-        let value = to_value(&self)?;
+        let value = to_value(self)?;
         let mut query = vec![];
         if let Value::Object(obj) = value {
             for (key, item) in obj.0 {

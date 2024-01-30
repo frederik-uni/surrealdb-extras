@@ -10,7 +10,7 @@ license = "MIT"
 
 [dependencies]
 surrealdb = "1.1"
-surrealdb-extras-proc-macro = { path = "surrealdb-extras-proc-macro" }
+surrealdb-extras-proc-macro = "0.1.1"
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", optional = true }
 geo = { version = "0.27", optional = true }
