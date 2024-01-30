@@ -1,4 +1,4 @@
-use crate::{SurrealDatabaseName, SurrealTableOverwrite};
+use crate::SurrealTableOverwrite;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput, Fields};
@@ -17,11 +17,9 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
                                 Ok(obj) => Some(obj),
                                 Err(_) => None,
                             };
-                        let (field_name, field_type) = renamed
-                            .map(|v| (v.rename.clone(), v.db_type.clone()))
-                            .unwrap_or((None, None));
-                        let field_name =
-                            field_name.unwrap_or(field.ident.as_ref().unwrap().to_string());
+                        let field_name = renamed
+                            .and_then(|v| v.rename.clone())
+                            .unwrap_or(field.ident.as_ref().unwrap().to_string());
                         field_name
                     }),
                     _ => unimplemented!("AttributeCollector only supports structs."),

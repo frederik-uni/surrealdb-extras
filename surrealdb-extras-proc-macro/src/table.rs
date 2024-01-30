@@ -1,4 +1,4 @@
-use crate::{SurrealDatabaseName, SurrealTableOverwrite, SurrealDatabaseExtraCommands};
+use crate::{SurrealDatabaseExtraCommands, SurrealDatabaseName, SurrealTableOverwrite};
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
@@ -6,12 +6,12 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
 pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(input as DeriveInput);
-    let SurrealDatabaseExtraCommands(temp) = deluxe::extract_attributes(&mut input).unwrap_or_default();
+    let SurrealDatabaseExtraCommands(temp) =
+        deluxe::extract_attributes(&mut input).unwrap_or_default();
     let SurrealDatabaseName(struct_name) = match deluxe::extract_attributes(&mut input) {
         Ok(v) => v,
         Err(e) => return e.to_compile_error().into(),
     };
-
 
     let struct_impl = &input.ident;
     let attributes: Vec<(TokenStream2, Option<String>, Option<String>)> = {

@@ -2,19 +2,6 @@ mod part;
 mod table;
 
 use proc_macro::TokenStream;
-use std::collections::HashMap;
-use std::fmt::{Debug, Display};
-
-use quote::quote;
-use std::fs::File;
-use std::io::Write;
-use syn::{parse_macro_input, Data, DeriveInput, Fields};
-
-#[derive(deluxe::ExtractAttributes, deluxe::ParseAttributes)]
-#[deluxe(attributes(serde))]
-struct SerdeRename {
-    rename: String,
-}
 
 //TODO: apply rename to serde
 #[derive(deluxe::ExtractAttributes, deluxe::ParseAttributes)]
@@ -22,7 +9,7 @@ struct SerdeRename {
 struct SurrealTableOverwrite {
     rename: Option<String>,
     db_type: Option<String>,
-    exclude: Option<bool>
+    exclude: Option<bool>,
 }
 
 #[derive(deluxe::ExtractAttributes)]
