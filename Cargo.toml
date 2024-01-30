@@ -1,0 +1,22 @@
+[package]
+name = "surrealdb-extras"
+version = "0.1.2"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+surrealdb = "1.1"
+db_proc_macro = { path = "db_proc_macro" }
+serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4", optional = true }
+geo = { version = "0.27", optional = true }
+rust_decimal = { version = "1.33", optional = true }
+uuid = { version = "1.7", optional = true }
+
+[features]
+default = []
+uuid = ["dep:uuid"]
+chrono = ["dep:chrono"]
+geo = ["dep:geo"]
+rust_decimal = ["dep:rust_decimal"]

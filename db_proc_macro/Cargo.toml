@@ -1,0 +1,16 @@
+[package]
+name = "db_proc_macro"
+version = "0.0.0"
+authors = ["frederik"]
+description = "A `cargo generate` template for quick-starting a procedural macro crate"
+keywords = ["template", "proc_macro", "procmacro"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1"
+proc-macro2 = { version = "1.0" }
+syn = "2.0.48"
+deluxe = "0.5.0"
