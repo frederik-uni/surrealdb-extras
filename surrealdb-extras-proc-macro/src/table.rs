@@ -18,13 +18,8 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
         match &mut input.data {
             Data::Struct(data_struct) => match &mut data_struct.fields {
                 Fields::Named(fields_named) => {
-                    let mut items = vec![(
-                        quote! {
-                                format!("DEFINE TABLE {};", #struct_name)
-                        },
-                        None,
-                        None,
-                    )];
+                    let create_table = format!("DEFINE TABLE {};", struct_name);
+                    let mut items = vec![(quote!(#create_table.to_string()), None, None)];
                     items.append(
                         &mut fields_named
                             .named

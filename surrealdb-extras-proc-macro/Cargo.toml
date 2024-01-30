@@ -1,6 +1,6 @@
 [package]
 name = "surrealdb-extras-proc-macro"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["frederik"]
 description = "A `cargo generate` template for quick-starting a procedural macro crate"
 keywords = ["template", "proc_macro", "procmacro"]

@@ -9,6 +9,7 @@ pub async fn establish(path: PathBuf) -> surrealdb::Result<Surreal<Db>> {
 
 #[derive(surrealdb_extras::SurrealTableEntry, Deserialize, Serialize, Clone, Default)]
 #[db("test_table")]
+#[sql(["DEFINE EVENT test_table_updated ON TABLE test_table WHEN $event = \"UPDATE\" AND $before.updated == $after.updated THEN (UPDATE $after.id SET updated = time::now() );"])]
 struct Test {
     random_number: i32,
     /// renamed field
