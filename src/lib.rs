@@ -6,8 +6,8 @@ mod records;
 mod surreal_table;
 mod thing;
 mod thing_distplay;
-use std::collections::HashMap;
 use serde::de::DeserializeOwned;
+use std::collections::HashMap;
 
 pub use db_proc_macro::SurrealSelect;
 pub use db_proc_macro::SurrealTable;
@@ -17,8 +17,6 @@ pub use records::RecordData;
 pub use surreal_table::SurrealTableInfo;
 pub use thing::ThingFunc;
 pub use thing::ThingType;
-
-
 
 #[doc(hidden)]
 /// converts struct structure to the db type
