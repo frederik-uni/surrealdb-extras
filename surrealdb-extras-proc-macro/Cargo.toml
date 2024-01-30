@@ -1,10 +1,13 @@
 [package]
-name = "db_proc_macro"
-version = "0.0.0"
+name = "surrealdb-extras-proc-macro"
+version = "0.1.1"
 authors = ["frederik"]
 description = "A `cargo generate` template for quick-starting a procedural macro crate"
 keywords = ["template", "proc_macro", "procmacro"]
 edition = "2018"
+readme = "../readme.md"
+repository = "https://github.com/frederik-uni/surrealdb-extras"
+license = "MIT"
 
 [lib]
 proc-macro = true
