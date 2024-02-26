@@ -62,7 +62,7 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
 
     let mut attr = vec![];
     let mut exc = vec![];
-    let mut keys = vec![];
+    let mut keys = vec!["id".to_string()];
     for (tk, opt, key) in attributes {
         attr.push(tk);
         if let Some(v) = opt {
