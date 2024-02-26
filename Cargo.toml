@@ -1,6 +1,6 @@
 [package]
 name = "surrealdb-extras"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 readme = "readme.md"
 repository = "https://github.com/frederik-uni/surrealdb-extras"
