@@ -215,9 +215,8 @@ impl ThingFunc {
         conn: &Surreal<C>,
     ) -> Result<Option<RecordData<T>>, Error> {
         conn.query(format!(
-            "SELECT {} FROM {} WHERE id = {}",
+            "SELECT {} FROM {}",
             T::keys().join(", "),
-            self.tb(),
             self
         ))
         .await?
