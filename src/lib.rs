@@ -4,8 +4,7 @@ mod does_imp;
 mod r2k;
 mod records;
 mod surreal_table;
-mod thing;
-mod thing_distplay;
+pub mod thing;
 use serde::de::DeserializeOwned;
 use std::collections::HashMap;
 
@@ -15,6 +14,7 @@ pub use records::RecordData;
 pub use surreal_table::SurrealTableInfo;
 pub use surrealdb_extras_proc_macro::SurrealSelect;
 pub use surrealdb_extras_proc_macro::SurrealTable;
+pub use thing::ThingArray;
 pub use thing::ThingFunc;
 pub use thing::ThingType;
 

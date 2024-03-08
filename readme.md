@@ -67,3 +67,5 @@ the functions in ThingType, RecordData, Record are from ThingFunc
 - `impl SurrealTableInfo`(use `#[derive(SurrealTable, Serialize, Deserialize)]`)
 - `ThingFunc`(within structs)
 - `ThingType`(within structs)
+
+- `ThingArray`
