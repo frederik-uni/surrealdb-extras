@@ -1,83 +1,80 @@
-use crate::{Record, RecordData, ThingFunc, ThingType};
+use crate::{Record, RecordData, RecordIdFunc, RecordIdType};
 use std::str::FromStr;
-use surrealdb::sql::{Id, Strand, Thing};
-use surrealdb::syn;
+use surrealdb::sql::Strand;
+use surrealdb::{RecordId, RecordIdKey};
 
-impl From<Thing> for ThingFunc {
-    fn from(value: Thing) -> Self {
-        ThingFunc::new(value)
+impl From<RecordId> for RecordIdFunc {
+    fn from(value: RecordId) -> Self {
+        RecordIdFunc::new(value)
     }
 }
 
-impl<T> From<ThingType<T>> for ThingFunc {
-    fn from(value: ThingType<T>) -> Self {
+impl<T> From<RecordIdType<T>> for RecordIdFunc {
+    fn from(value: RecordIdType<T>) -> Self {
         Self(value.thing.0)
     }
 }
 
-impl From<Record> for ThingFunc {
+impl From<Record> for RecordIdFunc {
     fn from(value: Record) -> Self {
         value.id
     }
 }
 
-impl<T> From<RecordData<T>> for ThingFunc {
+impl<T> From<RecordData<T>> for RecordIdFunc {
     fn from(value: RecordData<T>) -> Self {
         value.id
     }
 }
 
-impl From<(&str, Id)> for ThingFunc {
-    fn from(value: (&str, Id)) -> Self {
-        Self::from(Thing::from(value))
+impl From<(&str, RecordIdKey)> for RecordIdFunc {
+    fn from(value: (&str, RecordIdKey)) -> Self {
+        Self::from(RecordId::from(value))
     }
 }
 
-impl From<(String, Id)> for ThingFunc {
-    fn from(value: (String, Id)) -> Self {
-        Self::from(Thing::from(value))
+impl From<(String, RecordIdKey)> for RecordIdFunc {
+    fn from(value: (String, RecordIdKey)) -> Self {
+        Self::from(RecordId::from(value))
     }
 }
 
-impl From<(String, String)> for ThingFunc {
+impl From<(String, String)> for RecordIdFunc {
     fn from(value: (String, String)) -> Self {
-        Self::from(Thing::from(value))
+        Self::from(RecordId::from(value))
     }
 }
 
-impl From<(&str, &str)> for ThingFunc {
+impl From<(&str, &str)> for RecordIdFunc {
     fn from(value: (&str, &str)) -> Self {
-        Self::from(Thing::from(value))
+        Self::from(RecordId::from(value))
     }
 }
 
-impl FromStr for ThingFunc {
-    type Err = ();
+impl FromStr for RecordIdFunc {
+    type Err = surrealdb::Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self::from(Thing::try_from(s)?))
+        Ok(Self::from(RecordId::from_str(s)?))
     }
 }
 
-impl TryFrom<String> for ThingFunc {
-    type Error = ();
+impl TryFrom<String> for RecordIdFunc {
+    type Error = surrealdb::Error;
     fn try_from(v: String) -> Result<Self, Self::Error> {
-        Ok(Self::from(Thing::try_from(v.as_str())?))
+        Ok(Self::from(RecordId::from_str(v.as_str())?))
     }
 }
 
-impl TryFrom<Strand> for ThingFunc {
-    type Error = ();
+impl TryFrom<Strand> for RecordIdFunc {
+    type Error = surrealdb::Error;
     fn try_from(v: Strand) -> Result<Self, Self::Error> {
-        Ok(Self::from(Thing::try_from(v.as_str())?))
+        Ok(Self::from(RecordId::from_str(v.as_str())?))
     }
 }
 
-impl TryFrom<&str> for ThingFunc {
-    type Error = ();
+impl TryFrom<&str> for RecordIdFunc {
+    type Error = surrealdb::Error;
     fn try_from(v: &str) -> Result<Self, Self::Error> {
-        match syn::thing(v) {
-            Ok(v) => Ok(Self::from(v)),
-            _ => Err(()),
-        }
+        Ok(Self::from(RecordId::from_str(v)?))
     }
 }

@@ -1,21 +1,22 @@
-use crate::{SurrealSelectInfo, ThingFunc};
+use crate::{RecordIdFunc, SurrealSelectInfo};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use surrealdb::method::{Content, Delete, Merge, Patch, Select};
 use surrealdb::opt::PatchOp;
-use surrealdb::sql::Thing;
-use surrealdb::{Connection, Error, Surreal};
+use surrealdb::{Connection, Error, RecordId, Surreal};
 
 #[derive(Debug, Serialize, Deserialize)]
 /// Deserialize response into id
 pub struct Record {
-    pub id: ThingFunc,
+    pub id: RecordIdFunc,
 }
 
 impl Record {
     /// From Thing
-    pub fn new(id: Thing) -> Self {
-        Self { id: ThingFunc(id) }
+    pub fn new(id: RecordId) -> Self {
+        Self {
+            id: RecordIdFunc(id),
+        }
     }
 
     /// deletes from db and return value
@@ -34,11 +35,11 @@ impl Record {
     }
 
     /// Replaces the current document / record data with the specified data
-    pub fn replace<T: DeserializeOwned, C: Connection, D: Serialize>(
+    pub fn replace<T: DeserializeOwned, C: Connection, D: Serialize + 'static>(
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, D, Option<T>> {
+    ) -> Content<C, Option<T>> {
         self.id.replace(conn, data)
     }
 
@@ -72,7 +73,7 @@ impl Record {
 #[derive(Debug, Serialize, Deserialize)]
 /// Deserialize response into id and data
 pub struct RecordData<RD> {
-    pub id: ThingFunc,
+    pub id: RecordIdFunc,
     #[serde(flatten)]
     pub data: RD,
 }
@@ -94,11 +95,11 @@ impl<D> RecordData<D> {
     }
 
     /// Replaces the current document / record data with the specified data
-    pub fn replace<T: DeserializeOwned, C: Connection, ID: Serialize>(
+    pub fn replace<T: DeserializeOwned, C: Connection, ID: Serialize + 'static>(
         self,
         conn: &Surreal<C>,
         data: ID,
-    ) -> Content<C, ID, Option<T>> {
+    ) -> Content<C, Option<T>> {
         self.id.replace(conn, data)
     }
 

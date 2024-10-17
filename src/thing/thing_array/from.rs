@@ -1,21 +1,21 @@
 use crate::thing::thing_array::ThingArray;
-use crate::{ThingFunc, ThingType};
-use surrealdb::sql::Thing;
+use crate::{RecordIdFunc, RecordIdType};
+use surrealdb::RecordId;
 
-impl From<Vec<ThingFunc>> for ThingArray {
-    fn from(value: Vec<ThingFunc>) -> Self {
+impl From<Vec<RecordIdFunc>> for ThingArray {
+    fn from(value: Vec<RecordIdFunc>) -> Self {
         Self(value.into_iter().map(|v| v.0).collect())
     }
 }
 
-impl<T> From<Vec<ThingType<T>>> for ThingArray {
-    fn from(value: Vec<ThingType<T>>) -> Self {
+impl<T> From<Vec<RecordIdType<T>>> for ThingArray {
+    fn from(value: Vec<RecordIdType<T>>) -> Self {
         Self(value.into_iter().map(|v| v.thing.0).collect())
     }
 }
 
-impl From<Vec<Thing>> for ThingArray {
-    fn from(value: Vec<Thing>) -> Self {
+impl From<Vec<RecordId>> for ThingArray {
+    fn from(value: Vec<RecordId>) -> Self {
         Self(value)
     }
 }

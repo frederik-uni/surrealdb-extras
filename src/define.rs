@@ -1,6 +1,6 @@
 use crate::surreal_table::Register;
 use std::collections::{HashMap, HashSet};
-use surrealdb::sql::Value;
+use surrealdb::Value;
 use surrealdb::{Connect, Connection, Surreal};
 
 /// creates namespace, db, tables and defines the attributes if they do not exist
@@ -56,6 +56,7 @@ async fn missing<C: Connection>(conn: &Surreal<C>, query: &str, key_value: (&str
         .unwrap()
         .take::<Value>(0)
         .unwrap()
+        .into_inner()
         .into_json()
         .as_object()
         .unwrap()
@@ -75,6 +76,7 @@ async fn table_list<C: Connection>(conn: &Surreal<C>) -> HashSet<String> {
         .unwrap()
         .take::<Value>(0)
         .unwrap()
+        .into_inner()
         .into_json()
         .as_object()
         .unwrap()

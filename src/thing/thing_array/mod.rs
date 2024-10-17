@@ -2,19 +2,17 @@ use crate::{Record, RecordData, SurrealSelectInfo};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 use surrealdb::method::{Content, Delete, Merge, Patch, Select};
-use surrealdb::opt::{PatchOp, Resource};
-use surrealdb::sql::{Array, Thing, Value};
-use surrealdb::{opt, Connection, Error, Surreal};
+use surrealdb::opt::{IntoResource, PatchOp, Resource};
+use surrealdb::{Connection, Error, RecordId, Surreal, Value};
 
 mod from;
 
-pub struct ThingArray(pub Vec<Thing>);
+pub struct ThingArray(pub Vec<RecordId>);
 
-impl<R> opt::IntoResource<Vec<R>> for ThingArray {
+impl<R> IntoResource<Vec<R>> for ThingArray {
     fn into_resource(self) -> surrealdb::Result<Resource> {
-        Ok(Resource::Array(Array::from(
-            self.0.into_iter().map(Value::from).collect::<Vec<_>>(),
-        )))
+        let v = self.0.into_iter().map(Value::from).collect::<Vec<_>>();
+        Ok(Resource::Array(v))
     }
 }
 
@@ -30,11 +28,11 @@ impl ThingArray {
     }
 
     /// Replaces the current document / record data with the specified data
-    pub fn replace<T: DeserializeOwned, C: Connection, D: Serialize>(
+    pub fn replace<T: DeserializeOwned, C: Connection, D: Serialize + 'static>(
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, D, Vec<T>> {
+    ) -> Content<C, Vec<T>> {
         conn.update(self).content(data)
     }
 

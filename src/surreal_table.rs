@@ -3,7 +3,7 @@ use crate::{Record, RecordData, SurrealSelectInfo};
 use serde::Serialize;
 use std::collections::HashMap;
 use surrealdb::sql::{to_value, Value};
-use surrealdb::{Connection, Surreal};
+use surrealdb::{Connection, RecordIdKey, Surreal};
 
 type F1 = fn() -> &'static str;
 type F3 = fn(&HashMap<&'static str, &'static str>) -> Vec<String>;
@@ -12,7 +12,7 @@ pub type Register = (F1, F1, F3);
 
 /// usefull functions for db
 /// will be created by proc macro
-pub trait SurrealTableInfo: Serialize + SurrealSelectInfo {
+pub trait SurrealTableInfo: Serialize + 'static + SurrealSelectInfo + Clone {
     /// db name
     fn name() -> &'static str;
     /// path to struct
@@ -23,12 +23,12 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo {
     fn funcs(names: &HashMap<&'static str, &'static str>) -> Vec<String>;
 
     /// checks if item exists in table and returns the result
-    async fn check_if_exists<C: Connection>(
-        &self,
-        db: &Surreal<C>,
+    async fn check_if_exists<'a, C: Connection>(
+        &'a self,
+        db: &'a Surreal<C>,
     ) -> Result<Option<Record>, surrealdb::Error> {
         let ignore = Self::exclude();
-        let value = to_value(self)?;
+        let value = to_value(self.clone())?;
         let mut query = vec![];
         if let Value::Object(obj) = value {
             for (key, item) in obj.0 {
@@ -53,19 +53,25 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo {
     }
 
     /// adds itself to the db and returns Record
-    async fn add_i<D: Connection>(&self, conn: &Surreal<D>) -> Result<Record, surrealdb::Error> {
-        let mut r: Vec<Record> = conn.create(Self::name()).content(self).await?;
-        Ok(r.remove(0))
+    async fn add_i<D: Connection>(
+        &'static self,
+        conn: &Surreal<D>,
+    ) -> Result<Option<Record>, surrealdb::Error> {
+        let r: Option<Vec<Record>> = conn.create(Self::name()).content(self).await?;
+        if let Some(mut v) = r {
+            return Ok(Some(v.remove(0)));
+        }
+        Ok(None)
     }
 
     /// checks if item exists(adds to db if its not in db) and returns id
     async fn get_or_insert<C: Connection>(
-        &self,
+        &'static self,
         db: &Surreal<C>,
-    ) -> Result<Record, surrealdb::Error> {
+    ) -> Result<Option<Record>, surrealdb::Error> {
         let check = self.check_if_exists(db).await?;
         if let Some(check) = check {
-            Ok(check)
+            Ok(Some(check))
         } else {
             self.add_i(db).await
         }
@@ -90,16 +96,22 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo {
     }
 
     /// adds itself to the db and returns true if there was a response
-    async fn add_s<D: Connection>(&self, conn: &Surreal<D>) -> Result<bool, surrealdb::Error> {
-        let r: Vec<Record> = conn.create(Self::name()).content(self).await?;
-        Ok(!r.is_empty())
+    async fn add_s<D: Connection>(
+        &'static self,
+        conn: &Surreal<D>,
+    ) -> Result<bool, surrealdb::Error> {
+        let r: Option<Vec<Record>> = conn.create(Self::name()).content(self).await?;
+        Ok(match r {
+            Some(v) => !v.is_empty(),
+            None => false,
+        })
     }
 
     /// inserts itself to the db and returns true if there was a response
     async fn insert_s<D: Connection>(
-        &self,
+        &'static self,
         conn: &Surreal<D>,
-        id: surrealdb::sql::Id,
+        id: RecordIdKey,
     ) -> Result<bool, surrealdb::Error> {
         let r: Option<Record> = conn.create((Self::name(), id)).content(self).await?;
         Ok(r.is_some())

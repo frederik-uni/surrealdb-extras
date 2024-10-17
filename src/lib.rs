@@ -14,9 +14,9 @@ pub use records::RecordData;
 pub use surreal_table::SurrealTableInfo;
 pub use surrealdb_extras_proc_macro::SurrealSelect;
 pub use surrealdb_extras_proc_macro::SurrealTable;
+pub use thing::RecordIdFunc;
+pub use thing::RecordIdType;
 pub use thing::ThingArray;
-pub use thing::ThingFunc;
-pub use thing::ThingType;
 
 #[doc(hidden)]
 /// converts struct structure to the db type

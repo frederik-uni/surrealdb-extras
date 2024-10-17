@@ -1,4 +1,4 @@
-use crate::ThingType;
+use crate::RecordIdType;
 use std::any::type_name;
 use std::collections::{HashMap, HashSet};
 use surrealdb::sql::Kind;
@@ -26,7 +26,7 @@ fn register() -> HashMap<&'static str, Kind> {
     hm.insert(type_name::<surrealdb::sql::Strand>(), Kind::String);
     hm.insert(type_name::<surrealdb::sql::Uuid>(), Kind::Uuid);
     hm.insert(type_name::<surrealdb::sql::Thing>(), Kind::Record(vec![]));
-    hm.insert(type_name::<crate::ThingFunc>(), Kind::Record(vec![]));
+    hm.insert(type_name::<crate::RecordIdFunc>(), Kind::Record(vec![]));
     hm.insert(type_name::<surrealdb::sql::Bytes>(), Kind::Bytes);
     hm.insert(type_name::<surrealdb::sql::Number>(), Kind::Number);
     hm.insert(type_name::<surrealdb::sql::Object>(), Kind::Object);
@@ -70,11 +70,11 @@ pub fn to_kind(s: &str, names: &HashMap<&'static str, &'static str>) -> Kind {
     }
     if let Some(v) = parse_inner::<Vec<bool>>(s) {
         Kind::Array(Box::new(to_kind(v.as_str(), names)), None)
-    } else if let Some(v) = parse_inner::<ThingType<bool>>(s) {
+    } else if let Some(v) = parse_inner::<RecordIdType<bool>>(s) {
         let db = names
             .get(v.as_str())
             .unwrap_or_else(|| panic!("{} is not a table", v));
-        Kind::Record(vec![surrealdb::sql::Table(db.to_string())])
+        Kind::Record(vec![surrealdb::sql::Table::from(db.to_string())])
     } else if let Some(v) = parse_inner::<Option<bool>>(s) {
         let ki = to_kind(v.as_str(), names);
         if ki == Kind::Any {

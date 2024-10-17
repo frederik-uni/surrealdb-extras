@@ -1,14 +1,12 @@
 mod from;
 mod r#impl;
 
-use crate::{RecordData, SurrealSelectInfo, SurrealTableInfo, ThingFunc};
+use crate::{RecordData, RecordIdFunc, SurrealSelectInfo, SurrealTableInfo};
 use serde::Serialize;
-use std::hash::Hash;
 use std::marker::PhantomData;
 use surrealdb::method::{Content, Delete, Merge, Patch};
 use surrealdb::opt::PatchOp;
-use surrealdb::sql::{Id, Thing};
-use surrealdb::{Connection, Error, Surreal};
+use surrealdb::{Connection, Error, RecordId, RecordIdKey, Surreal};
 
 /// ThingFunc + defining the table for SurrealTableInfo
 /// ```
@@ -20,24 +18,24 @@ use surrealdb::{Connection, Error, Surreal};
 ///     refr: surrealdb_extras::ThingType<Test>
 /// }
 /// ```
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct ThingType<T> {
+#[derive(Clone, PartialEq, PartialOrd)]
+pub struct RecordIdType<T> {
     /// thing func
-    pub thing: ThingFunc,
+    pub thing: RecordIdFunc,
     /// should never be initialized
     parse_to: PhantomData<T>,
 }
 
-impl<T: SurrealTableInfo + SurrealSelectInfo> ThingType<T> {
-    pub fn new(thing_func: ThingFunc) -> Self {
+impl<T: SurrealTableInfo + SurrealSelectInfo> RecordIdType<T> {
+    pub fn new(thing_func: RecordIdFunc) -> Self {
         Self {
             thing: thing_func,
             parse_to: Default::default(),
         }
     }
-    pub fn new_thing(thing: Thing) -> Self {
+    pub fn new_thing(thing: RecordId) -> Self {
         Self {
-            thing: ThingFunc::new(thing),
+            thing: RecordIdFunc::new(thing),
             parse_to: Default::default(),
         }
     }
@@ -56,13 +54,13 @@ impl<T: SurrealTableInfo + SurrealSelectInfo> ThingType<T> {
     }
 
     /// returns table
-    pub fn tb(&self) -> &String {
-        &self.thing.0.tb
+    pub fn tb(&self) -> &str {
+        self.thing.tb()
     }
 
     /// returns id
-    pub fn id(&self) -> &Id {
-        &self.thing.0.id
+    pub fn id(&self) -> &RecordIdKey {
+        self.thing.id()
     }
     /// deletes from db and return success
     pub async fn delete_s<C: Connection>(self, conn: &Surreal<C>) -> Result<bool, Error> {
@@ -84,11 +82,11 @@ impl<T: SurrealTableInfo + SurrealSelectInfo> ThingType<T> {
     }
 
     /// Replaces the current document / record data with the specified data
-    pub fn replace<C: Connection, D: Serialize>(
+    pub fn replace<C: Connection, D: Serialize + 'static>(
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, D, Option<T>> {
+    ) -> Content<C, Option<T>> {
         self.thing.replace(conn, data)
     }
 
