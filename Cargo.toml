@@ -11,14 +11,14 @@ description = "Provides additional functionality for working with SurrealDB"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-surrealdb = "1"
+surrealdb = "*"
 #surrealdb-extras-proc-macro = {path = "surrealdb-extras-proc-macro"}
 surrealdb-extras-proc-macro = "0.1.3"
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", optional = true }
 geo = { version = "0.28", optional = true }
-rust_decimal = { version = "1.33", optional = true }
-uuid = { version = "1.7", optional = true }
+rust_decimal = { version = "1.36", optional = true }
+uuid = { version = "1.11", optional = true }
 
 [features]
 default = []
