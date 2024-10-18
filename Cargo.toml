@@ -1,6 +1,6 @@
 [package]
 name = "surrealdb-extras"
-version = "2.0.2"
+version = "2.0.3"
 edition = "2021"
 readme = "readme.md"
 repository = "https://github.com/frederik-uni/surrealdb-extras"
@@ -19,6 +19,7 @@ chrono = { version = "0.4", optional = true }
 geo = { version = "0.28", optional = true }
 rust_decimal = { version = "1.36", optional = true }
 uuid = { version = "1.11", optional = true }
+serde-content = "0.1.0"
 
 [features]
 default = []

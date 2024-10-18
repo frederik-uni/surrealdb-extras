@@ -1,8 +1,9 @@
 #![allow(async_fn_in_trait)]
 use crate::{Record, RecordData, SurrealSelectInfo};
 use serde::Serialize;
+use serde_content::Serializer;
 use std::collections::HashMap;
-use surrealdb::sql::{to_value, Value};
+use surrealdb::sql::Value;
 use surrealdb::{Connection, RecordIdKey, Surreal};
 
 type F1 = fn() -> &'static str;
@@ -12,7 +13,7 @@ pub type Register = (F1, F1, F3);
 
 /// usefull functions for db
 /// will be created by proc macro
-pub trait SurrealTableInfo: Serialize + 'static + SurrealSelectInfo + Clone {
+pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone {
     /// db name
     fn name() -> &'static str;
     /// path to struct
@@ -28,7 +29,12 @@ pub trait SurrealTableInfo: Serialize + 'static + SurrealSelectInfo + Clone {
         db: &'a Surreal<C>,
     ) -> Result<Option<Record>, surrealdb::Error> {
         let ignore = Self::exclude();
-        let value = to_value(self.clone())?;
+        let value: Value = Serializer::new()
+            .serialize(self)
+            .map_err(|e| {
+                surrealdb::Error::Api(surrealdb::error::Api::SerializeValue(e.to_string()))
+            })?
+            .try_into()?;
         let mut query = vec![];
         if let Value::Object(obj) = value {
             for (key, item) in obj.0 {
