@@ -3183,7 +3183,7 @@ dependencies = [
 
 [[package]]
 name = "surrealdb-extras"
-version = "2.0.0"
+version = "2.0.2"
 dependencies = [
  "chrono",
  "geo",
@@ -3196,9 +3196,9 @@ dependencies = [
 
 [[package]]
 name = "surrealdb-extras-proc-macro"
-version = "0.2.0"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c891b2912144d1aaec0b2190c0dea7101a480a18e5ef2db326e54b019ff54852"
+checksum = "3248ac666ba2fafb994ae1e8a51f1883e5b408c5d29dd67306c6eba591e35e1e"
 dependencies = [
  "deluxe",
  "proc-macro2",
