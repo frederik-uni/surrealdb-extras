@@ -16,7 +16,7 @@ mod r#impl;
 /// struct Test {
 ///     name: String,
 ///     /// a refrence to another table entry
-///     refr: surrealdb_extras::ThingFunc
+///     refr: surrealdb_extras::RecordIdFunc
 /// }
 /// ```
 pub struct RecordIdFunc(pub RecordId);

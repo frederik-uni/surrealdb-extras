@@ -8,14 +8,14 @@ use surrealdb::method::{Content, Delete, Merge, Patch};
 use surrealdb::opt::PatchOp;
 use surrealdb::{Connection, Error, RecordId, RecordIdKey, Surreal};
 
-/// ThingFunc + defining the table for SurrealTableInfo
+/// RecordIdFunc + defining the table for SurrealTableInfo
 /// ```
 /// #[derive(surrealdb_extras::SurrealTable, serde::Serialize, serde::Deserialize)]
 /// #[db("test_table")]
 /// struct Test {
 ///     name: String,
 ///     /// a refrence to another entry in the table `test_table`
-///     refr: surrealdb_extras::ThingType<Test>
+///     refr: surrealdb_extras::RecordIdType<Test>
 /// }
 /// ```
 #[derive(Clone, PartialEq, PartialOrd)]

@@ -34,38 +34,38 @@ pub async fn demo() {
         .insert(&conn, Some(sql::Id::rand()))
         .await
         .unwrap();
-        
+
     // creates new item with random id and return record
     let v: surrealdb_extras::Record = test.add(&conn).await.unwrap().unwrap();
-    
+
     // delete record
     let v: Option<surrealdb_extras::Record> = v.delete(&conn).await.unwrap();
 }
 ```
 
 ## usefull functions in:
-- ThingFunc
+- RecordIdFunc
 - SurrealTableInfo
 
-the functions in ThingType, RecordData, Record are from ThingFunc
+the functions in RecordIdType, RecordData, Record are from RecordIdFunc
 
 
 ## Categorized
 
-##### init: 
+##### init:
 - `use_ns_db`
 - `impl SurrealTableInfo`(use `#[derive(SurrealTable, Serialize, Deserialize)]`)
 
-##### Deserialize: 
-- `impl SurrealSelectInfo`(use `#[derive(SurrealSelect, Deserialize)]` or `#[derive(SurrealTable, Serialize, Deserialize)]`) 
+##### Deserialize:
+- `impl SurrealSelectInfo`(use `#[derive(SurrealSelect, Deserialize)]` or `#[derive(SurrealTable, Serialize, Deserialize)]`)
 - `Record`
 - `RecordData`
-- `ThingFunc`(within structs)
-- `ThingType`(within structs)
+- `RecordIdFunc`(within structs)
+- `RecordIdType`(within structs)
 
-##### Serialize: 
+##### Serialize:
 - `impl SurrealTableInfo`(use `#[derive(SurrealTable, Serialize, Deserialize)]`)
-- `ThingFunc`(within structs)
-- `ThingType`(within structs)
+- `RecordIdFunc`(within structs)
+- `RecordIdType`(within structs)
 
 - `ThingArray`

@@ -106,7 +106,7 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
                 conn.create(#struct_name).content(self)
             }
 
-            pub fn insert<'a: 'b, 'b, D: surrealdb::Connection>(self, conn: &'a surrealdb::Surreal<D>, id: surrealdb::sql::Id)-> surrealdb::method::Content<'b, D, #struct_impl, Option<surrealdb_extras::RecordData<#struct_impl>>> {
+            pub fn insert<'a: 'b, 'b, D: surrealdb::Connection>(self, conn: &'a surrealdb::Surreal<D>, id: surrealdb::sql::Id)-> surrealdb::method::Content<'b, #struct_impl, Option<surrealdb_extras::RecordData<#struct_impl>>> {
                 conn.create((#struct_name, id)).content(self)
             }
         }
