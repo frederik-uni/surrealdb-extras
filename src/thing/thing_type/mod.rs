@@ -73,12 +73,12 @@ impl<T: SurrealTableInfo + SurrealSelectInfo> RecordIdType<T> {
     }
 
     /// Merges the current document / record data with the specified data
-    pub fn update<C: Connection, D: Serialize>(
+    pub fn merge<C: Connection, D: Serialize>(
         self,
         conn: &Surreal<C>,
         data: D,
     ) -> Merge<C, D, Option<T>> {
-        self.thing.update(conn, data)
+        self.thing.merge(conn, data)
     }
 
     /// Replaces the current document / record data with the specified data

@@ -60,7 +60,7 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone + 'static {
 
     /// adds itself to the db and returns Record
     async fn add_i<D: Connection>(self, conn: &Surreal<D>) -> Result<Record, surrealdb::Error> {
-        let mut r: Vec<Record> = conn.insert(Self::name()).content(self).await?;
+        let mut r: Vec<Record> = conn.insert(Self::name()).content(vec![self]).await?;
         return Ok(r.remove(0));
     }
 
@@ -96,8 +96,8 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone + 'static {
     }
 
     /// adds itself to the db and returns true if there was a response
-    async fn add_s<D: Connection>(self, conn: Surreal<D>) -> Result<bool, surrealdb::Error> {
-        let r: Vec<Record> = conn.insert(Self::name()).content(self).await?;
+    async fn add_s<D: Connection>(self, conn: &Surreal<D>) -> Result<bool, surrealdb::Error> {
+        let r: Vec<Record> = conn.insert(Self::name()).content(vec![self]).await?;
         Ok(!r.is_empty())
     }
 

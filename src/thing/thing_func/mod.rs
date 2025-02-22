@@ -47,7 +47,7 @@ impl RecordIdFunc {
     }
 
     /// Merges the current document / record data with the specified data
-    pub fn update<T: DeserializeOwned, C: Connection, D: Serialize>(
+    pub fn merge<T: DeserializeOwned, C: Connection, D: Serialize>(
         self,
         conn: &Surreal<C>,
         data: D,

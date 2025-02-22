@@ -44,12 +44,12 @@ impl Record {
     }
 
     /// Merges the current document / record data with the specified data
-    pub fn update<T: DeserializeOwned, C: Connection, D: Serialize>(
+    pub fn merge<T: DeserializeOwned, C: Connection, D: Serialize>(
         self,
         conn: &Surreal<C>,
         data: D,
     ) -> Merge<C, D, Option<T>> {
-        self.id.update(conn, data)
+        self.id.merge(conn, data)
     }
 
     /// Patches the current document / record data with the specified JSON Patch data
@@ -104,12 +104,12 @@ impl<D> RecordData<D> {
     }
 
     /// Merges the current document / record data with the specified data
-    pub fn update<T: DeserializeOwned, C: Connection, ID: Serialize>(
+    pub fn merge<T: DeserializeOwned, C: Connection, ID: Serialize>(
         self,
         conn: &Surreal<C>,
         data: ID,
     ) -> Merge<C, ID, Option<T>> {
-        self.id.update(conn, data)
+        self.id.merge(conn, data)
     }
 
     /// Patches the current document / record data with the specified JSON Patch data
