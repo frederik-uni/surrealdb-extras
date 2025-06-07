@@ -18,12 +18,18 @@ use surrealdb::{Connection, Error, RecordId, RecordIdKey, Surreal};
 ///     refr: surrealdb_extras::RecordIdType<Test>
 /// }
 /// ```
-#[derive(Clone, PartialEq, PartialOrd)]
+#[derive(Clone, PartialOrd)]
 pub struct RecordIdType<T> {
     /// thing func
     pub thing: RecordIdFunc,
     /// should never be initialized
     parse_to: PhantomData<T>,
+}
+
+impl<T> PartialEq for RecordIdType<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.thing == other.thing
+    }
 }
 
 impl<T: SurrealTableInfo + SurrealSelectInfo> RecordIdType<T> {
