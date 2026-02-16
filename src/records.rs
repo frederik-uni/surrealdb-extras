@@ -401,7 +401,7 @@ impl Record {
     }
 
     /// deletes from db and return value
-    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<C, Option<T>> {
+    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<'_, C, Option<T>> {
         self.id.delete(conn)
     }
 
@@ -411,7 +411,7 @@ impl Record {
     }
 
     /// gets from db
-    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<C, Option<T>> {
+    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<'_, C, Option<T>> {
         self.id.get(conn)
     }
 
@@ -420,7 +420,7 @@ impl Record {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, Option<T>> {
+    ) -> Content<'_, C, Option<T>> {
         self.id.replace(conn, data)
     }
 
@@ -429,7 +429,7 @@ impl Record {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Merge<C, D, Option<T>> {
+    ) -> Merge<'_, C, D, Option<T>> {
         self.id.merge(conn, data)
     }
 
@@ -438,7 +438,7 @@ impl Record {
         self,
         conn: &Surreal<C>,
         data: PatchOp,
-    ) -> Patch<C, Option<T>> {
+    ) -> Patch<'_, C, Option<T>> {
         self.id.patch(conn, data)
     }
 
@@ -460,7 +460,7 @@ pub struct RecordData<RD> {
 
 impl<D> RecordData<D> {
     /// deletes from db and return value
-    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<C, Option<T>> {
+    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<'_, C, Option<T>> {
         self.id.delete(conn)
     }
 
@@ -470,7 +470,7 @@ impl<D> RecordData<D> {
     }
 
     /// gets from db
-    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<C, Option<T>> {
+    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<'_, C, Option<T>> {
         self.id.get(conn)
     }
 
@@ -479,7 +479,7 @@ impl<D> RecordData<D> {
         self,
         conn: &Surreal<C>,
         data: ID,
-    ) -> Content<C, Option<T>> {
+    ) -> Content<'_, C, Option<T>> {
         self.id.replace(conn, data)
     }
 
@@ -488,7 +488,7 @@ impl<D> RecordData<D> {
         self,
         conn: &Surreal<C>,
         data: ID,
-    ) -> Merge<C, ID, Option<T>> {
+    ) -> Merge<'_, C, ID, Option<T>> {
         self.id.merge(conn, data)
     }
 
@@ -497,7 +497,7 @@ impl<D> RecordData<D> {
         self,
         conn: &Surreal<C>,
         data: PatchOp,
-    ) -> Patch<C, Option<T>> {
+    ) -> Patch<'_, C, Option<T>> {
         self.id.patch(conn, data)
     }
 

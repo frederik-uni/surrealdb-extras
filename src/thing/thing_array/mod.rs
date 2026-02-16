@@ -18,12 +18,12 @@ impl<R> IntoResource<Vec<R>> for ThingArray {
 
 impl ThingArray {
     /// deletes from db and return value
-    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<C, Vec<T>> {
+    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<'_, C, Vec<T>> {
         conn.delete(self)
     }
 
     /// gets from db
-    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<C, Vec<T>> {
+    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<'_, C, Vec<T>> {
         conn.select(self)
     }
 
@@ -32,7 +32,7 @@ impl ThingArray {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, Vec<T>> {
+    ) -> Content<'_, C, Vec<T>> {
         conn.update(self).content(data)
     }
 
@@ -41,7 +41,7 @@ impl ThingArray {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Merge<C, D, Vec<T>> {
+    ) -> Merge<'_, C, D, Vec<T>> {
         conn.update(self).merge(data)
     }
 
@@ -50,7 +50,7 @@ impl ThingArray {
         self,
         conn: &Surreal<C>,
         data: PatchOp,
-    ) -> Patch<C, Vec<T>> {
+    ) -> Patch<'_, C, Vec<T>> {
         conn.update(self).patch(data)
     }
 

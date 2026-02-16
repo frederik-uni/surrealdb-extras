@@ -116,7 +116,7 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone + 'static {
     /// returns every item in table
     fn all<T: serde::Serialize, C: Connection>(
         conn: &Surreal<C>,
-    ) -> surrealdb::method::Select<C, Vec<T>> {
+    ) -> surrealdb::method::Select<'_, C, Vec<T>> {
         conn.select(Self::name())
     }
 

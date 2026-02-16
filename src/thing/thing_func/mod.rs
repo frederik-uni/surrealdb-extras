@@ -28,12 +28,12 @@ impl RecordIdFunc {
     }
 
     /// deletes from db and return value
-    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<C, Option<T>> {
+    pub fn delete<T, C: Connection>(self, conn: &Surreal<C>) -> Delete<'_, C, Option<T>> {
         conn.delete(self.0)
     }
 
     /// gets from db
-    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<C, Option<T>> {
+    pub fn get<T, C: Connection>(self, conn: &Surreal<C>) -> Select<'_, C, Option<T>> {
         conn.select(self.0)
     }
 
@@ -42,7 +42,7 @@ impl RecordIdFunc {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Content<C, Option<R>> {
+    ) -> Content<'_, C, Option<R>> {
         conn.update(self.0).content(data)
     }
 
@@ -51,7 +51,7 @@ impl RecordIdFunc {
         self,
         conn: &Surreal<C>,
         data: D,
-    ) -> Merge<C, D, Option<T>> {
+    ) -> Merge<'_, C, D, Option<T>> {
         conn.update(self.0).merge(data)
     }
 
@@ -60,7 +60,7 @@ impl RecordIdFunc {
         self,
         conn: &Surreal<C>,
         data: PatchOp,
-    ) -> Patch<C, Option<T>> {
+    ) -> Patch<'_, C, Option<T>> {
         conn.update(self.0).patch(data)
     }
 
