@@ -61,6 +61,7 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
     };
 
     let mut attr = vec![];
+    let mut attr_strict = vec![];
     let mut exc = vec![];
     let mut keys = vec!["id".to_string()];
     for (tk, opt, key) in attributes {
@@ -73,7 +74,7 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
         }
     }
     for temp in temp {
-        attr.push(quote!(#temp.to_string()));
+        attr_strict.push(quote!(#temp.to_string()));
     }
 
     let gen = quote! {
@@ -98,6 +99,9 @@ pub fn derive_attribute_collector(input: TokenStream) -> TokenStream {
 
             fn funcs(names: &std::collections::HashMap<&'static str, &'static str>) ->  Vec<String>{
                 vec![#( #attr ),*]
+            }
+            fn funcs_strict(names: &std::collections::HashMap<&'static str, &'static str>) ->  Vec<String>{
+                vec![#( #attr_strict ),*]
             }
         }
 

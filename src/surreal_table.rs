@@ -9,7 +9,7 @@ use surrealdb::{Connection, RecordIdKey, Surreal};
 type F1 = fn() -> &'static str;
 type F3 = fn(&HashMap<&'static str, &'static str>) -> Vec<String>;
 
-pub type Register = (F1, F1, F3);
+pub type Register = (F1, F1, F3, F3);
 
 /// usefull functions for db
 /// will be created by proc macro
@@ -22,6 +22,7 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone + 'static {
     fn exclude() -> &'static [&'static str];
     /// register attr
     fn funcs(names: &HashMap<&'static str, &'static str>) -> Vec<String>;
+    fn funcs_strict(names: &HashMap<&'static str, &'static str>) -> Vec<String>;
 
     /// checks if item exists in table and returns the result
     async fn check_if_exists<'a, C: Connection>(
@@ -128,6 +129,6 @@ pub trait SurrealTableInfo: Serialize + SurrealSelectInfo + Clone + 'static {
         //         return Err(format!("{} is a table", typ.to_string())
         //     }
         // }
-        Ok((Self::name, Self::path, Self::funcs))
+        Ok((Self::name, Self::path, Self::funcs, Self::funcs_strict))
     }
 }
