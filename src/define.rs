@@ -15,13 +15,12 @@ use surrealdb::{Connect, Connection, Surreal};
 /// }
 /// ```
 pub async fn use_ns_db<C: Connection>(
-    conn: Connect<C, Surreal<C>>,
+    conn: Surreal<C>,
     namespace: &str,
     db: &str,
     register: Vec<Register>,
     strict: bool,
 ) -> surrealdb::Result<Surreal<C>> {
-    let conn = conn.await?;
     if missing(&conn, "INFO FOR KV", ("namespaces", namespace)).await {
         conn.query(format!("DEFINE NAMESPACE {};", namespace))
             .await?;

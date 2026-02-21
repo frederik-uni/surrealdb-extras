@@ -1,6 +1,6 @@
 [package]
 name = "surrealdb-extras"
-version = "2.0.13"
+version = "3.0.0"
 edition = "2021"
 readme = "readme.md"
 repository = "https://github.com/frederik-uni/surrealdb-extras"
@@ -11,9 +11,9 @@ description = "Provides additional functionality for working with SurrealDB"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-surrealdb = "2"
+surrealdb = "3"
 #surrealdb-extras-proc-macro = {path = "surrealdb-extras-proc-macro"}
-surrealdb-extras-proc-macro = "2.0.13"
+surrealdb-extras-proc-macro = "2.0.14"
 serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", optional = true }
 geo = { version = "0.32.0", optional = true }
